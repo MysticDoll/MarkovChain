@@ -17,6 +17,7 @@ public class markov {
 
 	private ArrayList<String> MarkovTable = new ArrayList<String>();
 	private ArrayList<String> SubjectTable = new ArrayList<String>();
+	private ArrayList<String[]> dwMarkovTable = new ArrayList<String[]>();
 
 	public markov() {
 
@@ -67,8 +68,54 @@ public class markov {
 			// System.out.println(MarkovTable.get(i));
 
 		}
-
 		MarkovTable.add("[END]");
+		for (int i=0;i<MarkovTable.size();i++){
+			String[] dwStr ={MarkovTable.get(i),MarkovTable.get(i+1)};
+			dwMarkovTable.add(dwStr);
+			if(dwStr[1].equals("[END]")){
+			break;
+			}
+		}
+		
+	}
+	
+	public String twoWordsChain(){
+		String topword = null;
+		String Statement = null;
+		String word;
+		Random rnd = new Random();
+		int indexnum = rnd.nextInt(SubjectTable.size() - 1);
+		topword = SubjectTable.get(indexnum);
+		word = dWordselect(topword);
+		Statement = topword + word;
+		String tempword = word;
+		int i = 1;
+		while(i==1){
+			tempword = dWordselect(tempword);
+			if(tempword==null){
+				i++;
+			}else if(tempword=="[END]"){
+				i++;
+			}else{
+				Statement = Statement + tempword;
+			}
+		}
+		
+
+		return Statement;
+	}
+	public String dWordselect(String source){
+		String nextWord;
+		ArrayList<String> wordList = new ArrayList<String>();
+		for(int i = 0;i<dwMarkovTable.size();i++){
+			if(dwMarkovTable.get(i)[0].equals(source)){
+				wordList.add(dwMarkovTable.get(i)[1]);
+			}
+		}
+		Random rnd = new Random();
+		nextWord = wordList.get(rnd.nextInt(wordList.size()));
+		
+		return nextWord;
 	}
 
 	public String chain() {
@@ -116,7 +163,7 @@ public class markov {
 		 * 
 		 * }
 		 */
-		return (nextWord);
+		return nextWord;
 
 	}
 
