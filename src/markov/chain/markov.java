@@ -82,38 +82,55 @@ public class markov {
 	public String twoWordsChain(){
 		String topword = null;
 		String Statement = null;
-		String word;
+		String[] word;
 		Random rnd = new Random();
 		int indexnum = rnd.nextInt(SubjectTable.size() - 1);
 		topword = SubjectTable.get(indexnum);
-		word = dWordselect(topword);
-		Statement = topword + word;
-		String tempword = word;
+		ArrayList<String[]> topwordList = new ArrayList<String[]>();
+		for (int i = 0 ;i<dwMarkovTable.size();i++){
+			if(dwMarkovTable.get(i)[0].equals(topword)){
+				topwordList.add(dwMarkovTable.get(i));
+			}
+			
+		}
+		Random rnd1 = new Random();
+		word = topwordList.get(rnd1.nextInt(topwordList.size()));
+		Statement = word[0] + word[1];
+		String[] tempword = word;
 		int i = 1;
 		while(i==1){
 			tempword = dWordselect(tempword);
 			if(tempword==null){
 				i++;
-			}else if(tempword=="[END]"){
+			}else if(tempword[1]=="[END]"){
+				Statement = Statement + tempword[0];
 				i++;
 			}else{
-				Statement = Statement + tempword;
+				Statement = Statement + tempword[0] + tempword[1];
 			}
 		}
 		
 
 		return Statement;
 	}
-	public String dWordselect(String source){
-		String nextWord;
-		ArrayList<String> wordList = new ArrayList<String>();
+	public String[] dWordselect(String[] source){
+		String[] nextWord;
+		ArrayList<String[]> wordList = new ArrayList<String[]>();
 		for(int i = 0;i<dwMarkovTable.size();i++){
-			if(dwMarkovTable.get(i)[0].equals(source)){
-				wordList.add(dwMarkovTable.get(i)[1]);
+			if(dwMarkovTable.get(i).equals(source)){
+				try{
+					wordList.add(dwMarkovTable.get(i+2));
+					}catch(Exception e){
+					
+				}
 			}
 		}
 		Random rnd = new Random();
-		nextWord = wordList.get(rnd.nextInt(wordList.size()));
+		try{
+			nextWord = wordList.get(rnd.nextInt(wordList.size()));
+		}catch(Exception e){
+			return null;
+		}
 		
 		return nextWord;
 	}
