@@ -15,15 +15,30 @@ import net.java.sen.dictionary.Token;
 
 public class markov {
 
-	private ArrayList<String> MarkovTable = new ArrayList<String>();
-	private ArrayList<String> SubjectTable = new ArrayList<String>();
-	private ArrayList<String[]> dwMarkovTable = new ArrayList<String[]>();
+	private static ArrayList<String> MarkovTable = new ArrayList<String>();
+	private static ArrayList<String> SubjectTable = new ArrayList<String>();
+	private static ArrayList<String[]> dwMarkovTable = new ArrayList<String[]>();
 
 	public markov() {
 
 	}
-
-	public void createTable(String source) {
+	
+	public static void main(String[] args){
+		if(args.length!=0){
+			createTable(args[0]);
+			if(args[1]!="1"){
+			
+				System.out.println(twoWordsChain());
+			
+			}else{
+				System.out.println(chain());
+			}
+		}
+		System.exit(0);
+	}
+	
+	public static void createTable(String source) {
+		ArrayList<String> tempArray = new ArrayList<String>();
 		StringTagger tagger = SenFactory.getStringTagger(null);
 		String sourceText = source;
 		final Pattern urlPattern = Pattern.compile(
@@ -50,8 +65,8 @@ public class markov {
 
 		for (Token token : tokens) {
 			MarkovTable.add(token.getSurface());
-			String pos = String.valueOf(token.getMorpheme().getPartOfSpeech()
-					.charAt(0));
+			tempArray.add(token.getSurface());
+			String pos = String.valueOf(token.getMorpheme().getPartOfSpeech().charAt(0));
 			if (pos.equals("名")) {
 				SubjectTable.add(token.getSurface());
 			}// else if(pos.equals("未")){
@@ -64,13 +79,22 @@ public class markov {
 				MarkovTable.remove(i);
 				MarkovTable.remove(i);
 			}
-
+			
 			// System.out.println(MarkovTable.get(i));
-
+		}
+		for (int i = 0; i < tempArray.size(); i++) {
+			String rep = tempArray.get(i);
+			if (String.valueOf(rep.charAt(0)).equals("@")) {
+				tempArray.remove(i);
+				tempArray.remove(i);
+			}
 		}
 		MarkovTable.add("[END]");
-		for (int i=0;i<MarkovTable.size();i++){
-			String[] dwStr ={MarkovTable.get(i),MarkovTable.get(i+1)};
+		tempArray.add("[END]");
+
+		
+		for (int i=0;i<tempArray.size();i++){
+			String[] dwStr ={tempArray.get(i),tempArray.get(i+1)};
 			dwMarkovTable.add(dwStr);
 			if(dwStr[1].equals("[END]")){
 			break;
@@ -79,7 +103,7 @@ public class markov {
 		
 	}
 	
-	public String twoWordsChain(){
+	public static String twoWordsChain(){
 		String topword = null;
 		String Statement = null;
 		String[] word;
@@ -113,7 +137,7 @@ public class markov {
 
 		return Statement;
 	}
-	public String[] dWordselect(String[] source){
+	public static String[] dWordselect(String[] source){
 		String[] nextWord;
 		ArrayList<String[]> wordList = new ArrayList<String[]>();
 		for(int i = 0;i<dwMarkovTable.size();i++){
@@ -135,7 +159,7 @@ public class markov {
 		return nextWord;
 	}
 
-	public String chain() {
+	public static String chain() {
 		String topWord = null;
 		String Statement = null;
 		String word;
@@ -160,7 +184,7 @@ public class markov {
 
 	}
 
-	public String wordselect(String source) {
+	public static String wordselect(String source) {
 		String nextWord;
 		ArrayList<String> wordList = new ArrayList<String>();
 		for (int i = 0; i < MarkovTable.size(); i++) {
