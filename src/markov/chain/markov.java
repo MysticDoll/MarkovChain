@@ -23,7 +23,8 @@ public class markov {
 
 	}
 	
-	public static void main(String[] args){
+	
+/*	public static void main(String[] args){
 		if(args.length!=0){
 			createTable(args[0]);
 			if(args[1]!="1"){
@@ -35,9 +36,9 @@ public class markov {
 			}
 		}
 		System.exit(0);
-	}
+	}*/
 	
-	public static void createTable(String source) {
+	public void createTable(String source) {
 		ArrayList<String> tempArray = new ArrayList<String>();
 		StringTagger tagger = SenFactory.getStringTagger(null);
 		String sourceText = source;
@@ -103,7 +104,7 @@ public class markov {
 		
 	}
 	
-	public static String twoWordsChain(){
+	public String twoWordsChain(){
 		String topword = null;
 		String Statement = null;
 		String[] word;
@@ -137,7 +138,7 @@ public class markov {
 
 		return Statement;
 	}
-	public static String[] dWordselect(String[] source){
+	public String[] dWordselect(String[] source){
 		String[] nextWord;
 		ArrayList<String[]> wordList = new ArrayList<String[]>();
 		for(int i = 0;i<dwMarkovTable.size();i++){
@@ -159,7 +160,7 @@ public class markov {
 		return nextWord;
 	}
 
-	public static String chain() {
+	public  String chain() {
 		String topWord = null;
 		String Statement = null;
 		String word;
@@ -184,7 +185,7 @@ public class markov {
 
 	}
 
-	public static String wordselect(String source) {
+	public String wordselect(String source) {
 		String nextWord;
 		ArrayList<String> wordList = new ArrayList<String>();
 		for (int i = 0; i < MarkovTable.size(); i++) {
