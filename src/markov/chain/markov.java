@@ -23,21 +23,6 @@ public class markov {
 
 	}
 	
-	
-/*	public static void main(String[] args){
-		if(args.length!=0){
-			createTable(args[0]);
-			if(args[1]!="1"){
-			
-				System.out.println(twoWordsChain());
-			
-			}else{
-				System.out.println(chain());
-			}
-		}
-		System.exit(0);
-	}*/
-	
 	public void createTable(String source) {
 		ArrayList<String> tempArray = new ArrayList<String>();
 		StringTagger tagger = SenFactory.getStringTagger(null);
@@ -60,7 +45,6 @@ public class markov {
 		try {
 			tagger.analyze(sourceText, tokens);
 		} catch (IOException e) {
-			// TODO 自動生成された catch ブロック
 			System.out.println("Error");
 		}
 
@@ -70,9 +54,7 @@ public class markov {
 			String pos = String.valueOf(token.getMorpheme().getPartOfSpeech().charAt(0));
 			if (pos.equals("名")) {
 				SubjectTable.add(token.getSurface());
-			}// else if(pos.equals("未")){
-			// SubjectTable.add(token.getSurface());
-			// }
+			}
 		}
 		for (int i = 0; i < MarkovTable.size(); i++) {
 			String rep = MarkovTable.get(i);
@@ -81,7 +63,6 @@ public class markov {
 				MarkovTable.remove(i);
 			}
 			
-			// System.out.println(MarkovTable.get(i));
 		}
 		for (int i = 0; i < tempArray.size(); i++) {
 			String rep = tempArray.get(i);
@@ -167,7 +148,7 @@ public class markov {
 		Random rnd = new Random();
 		int indexnum = rnd.nextInt(SubjectTable.size() - 1);
 		topWord = SubjectTable.get(indexnum); // 開始後のランダム取り出し
-		word = wordselect(topWord); // Exception
+		word = wordselect(topWord); 
 		Statement = topWord + word;
 		String tempword = word;
 		int i = 1;
@@ -199,12 +180,6 @@ public class markov {
 		}
 		Random rnd = new Random();
 		nextWord = wordList.get(rnd.nextInt(wordList.size()));
-		/*
-		 * Random rnd2 = new Random(); if(rnd2.nextInt(20) == 0){ nextWord =
-		 * null;
-		 * 
-		 * }
-		 */
 		return nextWord;
 
 	}
